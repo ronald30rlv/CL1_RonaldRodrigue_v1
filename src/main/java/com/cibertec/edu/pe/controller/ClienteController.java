@@ -3,17 +3,24 @@ package com.cibertec.edu.pe.controller;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cibertec.edu.pe.entity.Categoria;
 import com.cibertec.edu.pe.entity.Cliente;
+import com.cibertec.edu.pe.services.IClienteServicec;
+
 
 @Controller
 @RequestMapping("/cliente")
 public class ClienteController {
+	@Autowired
+	private IClienteServicec servicio;
 	//Creando el listado de Clientes 
 		@GetMapping("/listado") //Para que lo pruebes en el localhost de la web
 		public String Listado(Model model) throws ParseException {
@@ -29,5 +36,10 @@ public class ClienteController {
 			model.addAttribute("title",title);
 			model.addAttribute("msg1",cabecera);
 			return "listado";
+		}
+		@PostMapping("/registar")
+		public String guardarEstudiante(@ModelAttribute("cliente")Cliente cliente) {
+			servicio.registrarCliente(cliente);
+			return "redirect:/estudiantes";
 		}
 }
